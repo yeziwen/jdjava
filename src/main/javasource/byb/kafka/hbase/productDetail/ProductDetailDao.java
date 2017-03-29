@@ -231,7 +231,6 @@ public class ProductDetailDao {
         write2Table(table, getOnePut(hBaseProductDetailValue));
     }
 
-
     public static void writeList(Table table, ArrayList<HBaseProductDetailValue> hBaseProductDetailValues) {
         List<Put> puts = new ArrayList<Put>();
 
@@ -242,17 +241,4 @@ public class ProductDetailDao {
         write2Table(table, puts);
 
     }
-
-    //刪除操作
-    public static void delete(Table table) {
-        List<Delete> deletes = new ArrayList<Delete>();
-        Delete delete = new Delete(Bytes.toBytes("rowkey"));
-        try {
-            table.delete(delete);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
 }
