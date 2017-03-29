@@ -245,42 +245,10 @@ public class ProductDetailDao {
 
     //刪除操作
     public static void delete(Table table) {
-
         List<Delete> deletes = new ArrayList<Delete>();
         Delete delete = new Delete(Bytes.toBytes("rowkey"));
         try {
             table.delete(delete);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-   //直接某一个行键比较
-    public static Filter getRowFilter(String rowKey) {
-        return null;
-    }
-    public static Filter  getSimpleColunmValueFilter(String familyName,String colunmame){
-        return null;
-    }
-    public static void query(String productID) throws IOException {
-        Scan scan = new Scan();
-        FilterList filterList = new FilterList();
-       // RowFilter filter = new RowFilter(CompareFilter.CompareOp.EQUAL, new BinaryComparator(Bytes.toBytes(rowKey))); // OK 筛
-      RowFilter filter = new RowFilter(CompareFilter.CompareOp.EQUAL, new RegexStringComparator("111\\d+")); // OK 筛
-      // RowFilter filter = new RowFilter(CompareFilter.CompareOp.EQUAL, Bytes.toBytes(productID)); // OK 筛
-        scan.setFilter(filter);
-        Table table = new TableFactory().getJDProductDetailTable();
-        ResultScanner scanner = table.getScanner(scan);
-        Iterator<Result> iterator = scanner.iterator();
-        while (iterator.hasNext()) {
-            Result next = iterator.next();
-            System.out.println(Bytes.toString(next.getValue(Bytes.toBytes("content"),Bytes.toBytes("productID"))));
-            System.out.println(Bytes.toString(next.getValue(Bytes.toBytes("content"),Bytes.toBytes("proudctBrand"))));
-            //打印所有列
-        }
-    }
-    public static void main(String[] args) {
-        try {
-            ProductDetailDao.query("");
         } catch (IOException e) {
             e.printStackTrace();
         }
