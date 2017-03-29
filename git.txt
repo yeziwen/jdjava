@@ -1,0 +1,8 @@
+打开Git Bash
+git config --global user.name "名字"
+git config --global user.email "邮箱地址"
+
+首先，在本地新建文件夹abc，进入到abc里面，然后git init
+
+
+git remote add origin https://github.com/yeziwen/jdjava.git
