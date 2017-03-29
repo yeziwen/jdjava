@@ -25,8 +25,7 @@ import java.util.Date;
  */
 public class JDMessageHandlerTask extends Thread{
 
-    private static final Logger logger = Logger.getLogger("messageHandler");
-    private static final Logger allData = Logger.getLogger("allData");
+    private static final Logger logger = Logger.getLogger(JDMessageHandlerTask.class);
 
     KafkaStream<byte[], byte[]> kafkaStreams;
 
@@ -48,17 +47,17 @@ public class JDMessageHandlerTask extends Thread{
 
             MessageAndMetadata<byte[], byte[]> record = streamIterator.next();
             String message = new String(record.message());
-            handleMessage(message, tableFactory);
-
+            try {
+                logger.info(simpleDateFormat.format(new Date().getTime())+":===="+(Main.count++));
+                logger.info(message);
+                handleMessage(message, tableFactory);
+            } catch (Exception e) {
+                logger.error(message+"解析异常");
+            }
         }
     }
 
-
     public void handleMessage(String json,TableFactory tableFactory) {
-
-        logger.info(simpleDateFormat.format(new Date().getTime())+":===="+(Main.count++));
-        allData.info(json);
-
         Gson gson = new Gson();
         PageModelKey pageModel = gson.fromJson(json, PageModelKey.class);
         String pageModelKey = pageModel.PageModelKey;

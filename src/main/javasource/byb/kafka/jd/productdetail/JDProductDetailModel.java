@@ -24,9 +24,7 @@ public class JDProductDetailModel {
     public static class Data {
         public String shopId;//店铺表：店铺ID
         public String shopName;//
-
         public String Price;
-        public String commentCount;
         public String Title;//名称
         public String[] Category;//条目
         public String categoryPath;//条目
@@ -39,10 +37,14 @@ public class JDProductDetailModel {
         public parameter2[] parameter2;
         public parameterBrand[] parameter_brand;
 
-        public String 排序;
-        public String[] 类目;
-        public String 商品总量;
-        public String 总页数;
+        public Suit[] suits;
+
+    }
+
+    public static class Suit{
+        public String id;
+        public String name;
+        public String price;
     }
 
     public static class parameterBrand{
@@ -51,12 +53,14 @@ public class JDProductDetailModel {
         public String Value;
     }
 
+
     public static class parameter2{
         public int index;
         public String Name;
         public String Value;
     }
 
+    //促销信息
     public static class Promotion{
         public String title;
         public String desc;

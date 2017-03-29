@@ -10,6 +10,7 @@ import java.util.concurrent.Executors;
 
 
 public class Main {
+
     public static void main(String[] args) throws IOException {
 
        /* log4j.appender.INFOLOG.File= ${log.dir}/${log.info.file}*/
@@ -18,11 +19,11 @@ public class Main {
         // System.setProperty("log.info.file", infoLogFileName);
         //System.setProperty("log.debug.file", debugLogFileName);
 
-        ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
+       /* ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
         for(int i=0;i<5;i++) {
             Consumer consumerThread_ = new Consumer("jd-com");
             cachedThreadPool.execute(consumerThread_);
-        }
+        }*/
 
 
 

@@ -1,6 +1,6 @@
 ### 设置###
 #log4j.rootLogger = error,stdout,I,
-log4j.rootLogger = info,stdout,logfile,logfile2
+log4j.rootLogger = info,stdout,logfile2
 
 #########自定logger
 log4j.logger.hotsell=info,hotsell

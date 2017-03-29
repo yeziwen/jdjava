@@ -3,11 +3,15 @@ package byb.kafka.jd.productdetail;
 import byb.common.MyTextUtils;
 import byb.common.Utils;
 import byb.kafka.hbase.TableFactory;
+import byb.kafka.hbase.hotShell.HotShellDao;
 import byb.kafka.hbase.productDetail.HBaseProductDetailValue;
 import byb.kafka.hbase.productDetail.ProductDetailDao;
 import byb.kafka.jd.commentlist.JDCommentListService;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.UUID;
 
 
 /**
@@ -25,6 +29,8 @@ public class JDProductDetailService {
 
         Gson gson = new Gson();
         JDProductDetailModel model = gson.fromJson(json, JDProductDetailModel.class);
+
+
         HBaseProductDetailValue hBaseProductDetailValue = new HBaseProductDetailValue();
         int len = model.Data.parameter2.length;
         String productName = "";
@@ -142,11 +148,37 @@ public class JDProductDetailService {
         String promotionString = Utils.getPromotionString(model.Data.promotion);
         hBaseProductDetailValue.salesEvents = promotionString;
 
+
         hBaseProductDetailValue.setDownloadTime(model.DownloadTime);//下载时间
         hBaseProductDetailValue.jdProductDetailDownloadTime = model.DownloadTime;
+        //新增爆品URL
+        String productHotSellID = hBaseProductDetailValue.sku + "-" + UUID.randomUUID().toString();
+        hBaseProductDetailValue.productHotSellID = productHotSellID;
+
         ProductDetailDao.write(
                 tableFactory.getJDProductDetailTable(),
                 hBaseProductDetailValue
                 );
+
+        //写爆品
+        if(model.Data.suits==null) return;
+        ArrayList<HBaseProductDetailValue> hBaseProductDetailValueList = new ArrayList<HBaseProductDetailValue>();
+        for(int i=0;i<model.Data.suits.length;i++) {
+            HBaseProductDetailValue hBaseProductDetailValue1 = new HBaseProductDetailValue();
+            hBaseProductDetailValue1.setProductHotSellID(productHotSellID);
+
+            hBaseProductDetailValue1.setSku(model.Data.suits[i].id);//這是主鍵
+            hBaseProductDetailValue1.setProductURL(Utils.getProductURL(hBaseProductDetailValue1.sku));
+            hBaseProductDetailValue1.setProductName(model.Data.suits[i].name);
+            hBaseProductDetailValue1.setProductSpec(Utils.getSpec(hBaseProductDetailValue1.productName));
+            hBaseProductDetailValue1.setProductPrice(model.Data.suits[i].price);
+            hBaseProductDetailValue1.setDownloadTime(model.DownloadTime);
+            hBaseProductDetailValue1.hotShellRowKey =hBaseProductDetailValue.sku+hBaseProductDetailValue1.sku;
+            hBaseProductDetailValueList.add(hBaseProductDetailValue1);
+        }
+        HotShellDao.writeList(tableFactory.getJDHotShellTable(),
+                hBaseProductDetailValueList);
+
+
     }
 }

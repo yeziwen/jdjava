@@ -58,7 +58,8 @@ public class JDHotShellService {
                     hBaseProductDetailValue1.setImageURL(imageUrl);
                     hBaseProductDetailValue1.setProductURL(Utils.getProductURL(wid));
                     hBaseProductDetailValue1.setDownloadTime(model.DownloadTime);
-                    //这么设计的目的是使爆品表记录尽可能少
+
+
                     hBaseProductDetailValue1.hotShellRowKey =model.Data.sku+hBaseProductDetailValue1.sku;
                     hBaseProductDetailValue1.setProductHotSellID(productHotSellID);
                     hBaseProductDetailValueList.add(hBaseProductDetailValue1);
@@ -76,7 +77,6 @@ public class JDHotShellService {
        // hBaseProductDetailValue.setProductURL(Utils.getProductURL(model.Data.sku));
      //   hBaseProductDetailValue.setProductBrand(model.Data.brank);
        // hBaseProductDetailValue.setDownloadTime(model.DownloadTime);
-
         hBaseProductDetailValue.setProductHotSellID(productHotSellID);
         hBaseProductDetailValue.setSku(model.Data.sku);
         hBaseProductDetailValue.jdHotSellDownloadTime = model.DownloadTime;
